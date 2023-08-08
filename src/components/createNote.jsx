@@ -1,10 +1,13 @@
-import React, { useState } from "react";
-import { name } from "tar/lib/types";
+import React, { useState } from "react"; 
 import AddIcon from '@mui/icons-material/Add';
 import Fab from '@mui/material/Fab';
 import { Zoom } from "@mui/material";
+import { useNavigate } from "react-router";
+import axios from "axios";
 
 function CreateNote(props){
+
+    // const navigate = useNavigate()
 
     const[isExpanded, setExpanded] = useState(false);
     const[note,setNote] = useState({
@@ -23,12 +26,20 @@ function CreateNote(props){
         });
     }
 
-    function handleClick(event){
-        props.onAdd(note);
-        setNote({
-            title : "",
-        content : ""
-        });
+    async function handleClick(event){
+        try{
+            await axios.post("http://localhost:3030/note",note)
+            window.location.reload(false);
+            // navigate("/")
+        }
+        catch (err){
+            console.log(err)
+        }
+        // props.onAdd(note);
+        // setNote({
+        //     title : "",
+        // content : ""
+        // });
         event.preventDefault();
     }
     function expand(){
